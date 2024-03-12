@@ -35,4 +35,11 @@ stdenv.mkDerivation rec {
       which
     ]}
   '';
+
+  meta = with lib; {
+    description = "The sketch program synthesis tool";
+    homepage = "https://github.com/asolarlez/sketch-backend";
+    license = licenses.mit;
+    platforms = platforms.unix;
+  };
 }

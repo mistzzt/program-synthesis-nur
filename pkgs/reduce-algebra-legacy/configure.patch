@@ -1,0 +1,26 @@
+diff --git a/csl/cslbase/configure b/csl/cslbase/configure
+index 47229da..3202261 100755
+--- a/csl/cslbase/configure
++++ b/csl/cslbase/configure
+@@ -28152,7 +28152,7 @@ printf "%s\n" "$as_me: CC=$CC CXX=$CXX CPP=$CPP CXXCPP=$CXXCPP" >&6;}
+ # that it is probably possible to build without use of MacPorts...
+ #
+ # This is to try to force linking against a system-provided version.
+-    LDFLAGS="-L/usr/lib -lcurses $LDFLAGS"
++    LDFLAGS="-L/usr/lib -lncurses $LDFLAGS"
+     LIBS="-lz \
+       -lbz2 \
+       -liconv \
+diff --git a/csl/cslbase/configure.ac b/csl/cslbase/configure.ac
+index 2d10db9..bf64a3f 100644
+--- a/csl/cslbase/configure.ac
++++ b/csl/cslbase/configure.ac
+@@ -1838,7 +1838,7 @@ then
+ # that it is probably possible to build without use of MacPorts...
+ #
+ # This is to try to force linking against a system-provided version.
+-    LDFLAGS="-L/usr/lib -lcurses $LDFLAGS"
++    LDFLAGS="-L/usr/lib -lncurses $LDFLAGS"
+     LIBS="-lz \
+       -lbz2 \
+       -liconv \
