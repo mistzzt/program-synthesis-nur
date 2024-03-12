@@ -1,12 +1,12 @@
 {
-  lib,
-  stdenv,
-  coreutils,
-  jdk,
-  flex,
-  bison,
   fetchurl,
+  lib,
   makeWrapper,
+  stdenv,
+  bison,
+  flex,
+  jdk,
+  which,
 }:
 stdenv.mkDerivation rec {
   name = "sketch-${version}";
@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
       --set SKETCH_HOME $out/sketch-frontend/runtime \
       --set PATH ${lib.makeBinPath [
       jdk
-      coreutils
+      which
     ]}
   '';
 }

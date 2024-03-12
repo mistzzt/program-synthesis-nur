@@ -4,4 +4,5 @@
   overlays = import ./overlays;
 
   sketch = pkgs.callPackage ./pkgs/sketch {};
+  reduce-algebra = pkgs.callPackage ./pkgs/reduce-algebra {};
 }
