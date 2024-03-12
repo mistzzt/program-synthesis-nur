@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
   version = "1.7.6";
   src = fetchurl {
     url = "https://people.csail.mit.edu/asolar/sketch-1.7.6.tar.gz";
-    sha256 = "0jhmqz2phhhhfcyms95cak3l5fjsj9smjsdz1njsds85c45iba2w";
+    sha256 = "5cdac9ce841fd532215ff9ad8cb61a38cbdf6de0a635a669d0e46cdae72da707";
   };
 
   nativeBuildInputs = [flex bison makeWrapper];
