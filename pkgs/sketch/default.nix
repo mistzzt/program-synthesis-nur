@@ -5,12 +5,13 @@
   jdk,
   flex,
   bison,
+  fetchurl,
   makeWrapper,
 }:
 stdenv.mkDerivation rec {
   name = "sketch-${version}";
   version = "1.7.6";
-  src = fetchTarball {
+  src = fetchurl {
     url = "https://people.csail.mit.edu/asolar/sketch-1.7.6.tar.gz";
     sha256 = "0jhmqz2phhhhfcyms95cak3l5fjsj9smjsdz1njsds85c45iba2w";
   };
