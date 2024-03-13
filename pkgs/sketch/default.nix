@@ -7,6 +7,7 @@
   flex,
   jdk,
   which,
+  coreutils,
 }:
 stdenv.mkDerivation rec {
   name = "sketch-${version}";
@@ -17,7 +18,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [flex bison makeWrapper];
-  buildInputs = [jdk];
+  buildInputs = [jdk which coreutils];
 
   configurePhase = "cd sketch-backend && chmod +x ./configure && ./configure";
   installPhase = ''
@@ -29,11 +30,7 @@ stdenv.mkDerivation rec {
       --argv0 "sketch" \
       --chdir $out/sketch-frontend \
       --add-flags "--fe-inc=$out/sketch-frontend/sketchlib" \
-      --set SKETCH_HOME $out/sketch-frontend/runtime \
-      --set PATH ${lib.makeBinPath [
-      jdk
-      which
-    ]}
+      --set SKETCH_HOME $out/sketch-frontend/runtime
   '';
 
   meta = with lib; {
