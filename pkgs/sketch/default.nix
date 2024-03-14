@@ -53,7 +53,6 @@ stdenv.mkDerivation rec {
 
     makeWrapper ${jdk}/bin/java $out/bin/sketch \
       --argv0 "sketch" \
-      --chdir $out/sketch-frontend \
       --add-flags "-cp $out/sketch-frontend/${name}-noarch.jar -ea sketch.compiler.main.seq.SequentialSketchMain --fe-inc=$out/sketch-frontend/sketchlib" \
       --set SKETCH_HOME $out/sketch-frontend/runtime
   '';
