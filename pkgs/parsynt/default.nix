@@ -56,6 +56,6 @@ ocamlPackages.buildDunePackage rec {
     description = "Automatic parallel divide-and-conquer programs synthesizer";
     homepage = "https://github.com/victornicolet/parsynt";
     license = licenses.gpl2;
-    platforms = ["x86_64-linux"];
+    platforms = platforms.unix;
   };
 }
