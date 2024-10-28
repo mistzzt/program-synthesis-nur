@@ -1,17 +1,15 @@
 {
-  fetchurl,
   fetchFromGitHub,
   lib,
   makeWrapper,
   stdenv,
-  bison,
-  flex,
-  autoconf,
-  automake,
-  libtool,
-  jdk,
-  which,
-  coreutils,
+  cmake,
+  pkg-config,
+  wget,
+  jsoncpp,
+  glog,
+  cbmc,
+  gurobi,
 }:
 stdenv.mkDerivation rec {
   name = "AutoLifter";
@@ -20,13 +18,13 @@ stdenv.mkDerivation rec {
     fetchFromGitHub
     {
       owner = "jiry17";
-      repo = "sketch-backend";
+      repo = "AutoLifter";
       rev = "4eef4cba765c6ee3687106b25c167bcd79441332";
-      sha256 = "79k3RJPoyqxGX3oyYJgbyd8teCTnoDyt91Sd/6aPPGU=";
+      sha256 = "bEAWVa0xYxtaPHGrpGNRBWey4rnJfRdpeYAaSKaoIPc=";
     };
   patches = [./diff.patch];
 
-  nativeBuildInputs = with pkgs; [
+  nativeBuildInputs = [
     cmake
     pkg-config
     wget
@@ -34,15 +32,15 @@ stdenv.mkDerivation rec {
     glog
     cbmc
     makeWrapper
-    pkgs.gurobi
+    gurobi
   ];
 
-  patchPhase = ''
+  preConfigure = ''
     substituteInPlace basic/config.cpp run/run run/run_exp \
       --replace 'SOURCEPATH' $out
 
     substituteInPlace exp/paradigms/paradigm_util.cpp \
-      --replace 'command = "cbmc "' 'command = "${pkgs.cbmc}/bin/cbmc "'
+      --replace 'command = "cbmc "' 'command = "${cbmc}/bin/cbmc "'
 
     substituteInPlace run/run run/run_exp \
       --replace 'build/main' 'bin/autolifter_main'
