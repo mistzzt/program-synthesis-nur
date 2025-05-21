@@ -1,4 +1,5 @@
 {
+  autoPatchelfHook,
   fetchurl,
   lib,
   makeWrapper,
