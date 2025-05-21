@@ -67,6 +67,7 @@ stdenv.mkDerivation {
       xorg.libXi
       xorg.libXrandr
       xorg.libXrender
+      autoPatchelfHook
     ]
     ++ lib.optionals stdenv.isDarwin [
       apple-sdk_11
@@ -130,6 +131,12 @@ stdenv.mkDerivation {
     # Configuration: Fix zlib not listed in LIBS
     substituteInPlace csl/configure csl/configure.ac \
       --replace 'LIBS="-lncurses  $LIBS"' 'LIBS="-lncurses -lz $LIBS"'
+
+    for arch in AMD64 AMD64_ext linux aarch64; do
+      if [ -f "psl/dist/kernel/$arch/bpsl" ]; then
+      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "psl/dist/kernel/$arch/bpsl"
+      fi
+    done
 
     ./autogen.sh --fast --with-csl --with-psl
   '';
