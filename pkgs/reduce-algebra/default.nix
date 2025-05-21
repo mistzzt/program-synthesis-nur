@@ -11,7 +11,7 @@
   bzip2,
   libiconv,
   which,
-  darwin,
+  apple-sdk_11,
   brotli,
   fontconfig,
   freetype,
@@ -69,10 +69,8 @@ stdenv.mkDerivation {
       xorg.libXrender
     ]
     ++ lib.optionals stdenv.isDarwin [
-      darwin.apple_sdk.frameworks.Carbon
-      darwin.stubs.rez
+      apple-sdk_11
     ];
-
   preConfigure = ''
     # Configuration: Rewrite CSL hard-coded paths to use dynamic libraries
     substituteInPlace csl/cslbase/configure csl/cslbase/configure.ac \
@@ -169,17 +167,11 @@ stdenv.mkDerivation {
       cp cslbuild/*/redfront/rfpsl $out/psl/rfpsl
       chmod +x $out/psl/rfpsl
 
-      makeWrapper $out/csl/redcsl $out/bin/reduce \
-        --argv0 "reduce" \
-        --chdir $out
-
       makeWrapper $out/csl/redcsl $out/bin/redcsl \
-        --argv0 "redcsl" \
-        --chdir $out
+        --argv0 "redcsl"
 
       makeWrapper $out/psl/redpsl $out/bin/redpsl \
-        --argv0 "redpsl" \
-        --chdir $out
+        --argv0 "redpsl"
     ''
     else ''
       BUILD=$(scripts/findhost.sh $(./config.guess))
@@ -207,17 +199,11 @@ stdenv.mkDerivation {
       chmod +x $out/redcsl $out/bin/rfcsl
       chmod +x $out/redpsl $out/bin/rfpsl
 
-      makeWrapper $out/redcsl $out/bin/reduce \
-        --argv0 "reduce" \
-        --chdir $out
-
       makeWrapper $out/redcsl $out/bin/redcsl \
-        --argv0 "redcsl" \
-        --chdir $out
+        --argv0 "redcsl"
 
       makeWrapper $out/redpsl $out/bin/redpsl \
-        --argv0 "redpsl" \
-        --chdir $out
+        --argv0 "redpsl"
     '';
 
   meta = with lib; {
