@@ -145,20 +145,30 @@ stdenv.mkDerivation {
       --replace 'aarch64-apple-darwin*)' 'aarch64-apple-darwin*|arm-apple-darwin*)'
 
     substituteInPlace csl/cslbase/Makefile csl/cslbase/Makefile.am csl/cslbase/Makefile.in \
-      --replace 'g++' '$(CXX)'
+                      configure configure.ac \
+      --replace 'g++' '$(CXX)' \
+      --replace 'gcc' '$(CC)'
 
-    ./autogen.sh --fast --with-csl --with-psl
+    ./autogen.sh --fast --with-csl ${
+      if stdenv.isDarwin
+      then ""
+      else "--with-psl"
+    }
   '';
 
-  configureFlags = [
-    "--disable-libtool-lock"
-    "--disable-option-checking"
-    "--with-ccache"
-    "--with-csl"
-    "--with-lto"
-    "--with-psl"
-    "--without-autogen"
-  ];
+  configureFlags =
+    [
+      "--disable-libtool-lock"
+      "--disable-option-checking"
+      "--with-ccache"
+      "--with-csl"
+      "--with-lto"
+      "--without-autogen"
+      "--disable-universal"
+    ]
+    ++ lib.optionals (!stdenv.isDarwin) [
+      "--with-psl"
+    ];
   dontDisableStatic = true;
 
   installPhase =
