@@ -26,7 +26,7 @@
 }:
 stdenv.mkDerivation {
   name = "reduce-algebra";
-  version = "r6860";
+  version = "6860";
   src = fetchurl {
     url = "https://sourceforge.net/projects/reduce-algebra/files/snapshot_2024-08-12/Reduce-svn6860-src.tar.gz";
     sha1 = "q81l4MA2h+4ky4Rwt26Vl0QPf5c=";
