@@ -12,7 +12,6 @@
   bzip2,
   libiconv,
   which,
-  apple-sdk_11,
   brotli,
   fontconfig,
   freetype,
@@ -69,9 +68,6 @@ stdenv.mkDerivation {
       xorg.libXrandr
       xorg.libXrender
       autoPatchelfHook
-    ]
-    ++ lib.optionals stdenv.isDarwin [
-      apple-sdk_11
     ];
 
   preConfigure = ''
@@ -164,10 +160,15 @@ stdenv.mkDerivation {
       "--with-csl"
       "--with-lto"
       "--without-autogen"
-      "--disable-universal"
     ]
     ++ lib.optionals (!stdenv.isDarwin) [
       "--with-psl"
+    ]
+    ++ lib.optionals stdenv.isDarwin [
+      "CXXFLAGS=-std=c++20"
+      "--without-fox"
+      "--disable-universal"
+      "--with-clang"
     ];
   dontDisableStatic = true;
 
