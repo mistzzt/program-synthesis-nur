@@ -12,7 +12,7 @@
   bzip2,
   libiconv,
   which,
-  apple-sdk_11,
+  apple-sdk_13,
   brotli,
   fontconfig,
   freetype,
@@ -71,7 +71,7 @@ stdenv.mkDerivation {
       autoPatchelfHook
     ]
     ++ lib.optionals stdenv.isDarwin [
-      apple-sdk_11
+      apple-sdk_13
     ];
   preConfigure = ''
     # Configuration: Rewrite CSL hard-coded paths to use dynamic libraries
@@ -138,6 +138,10 @@ stdenv.mkDerivation {
     find psl/dist/kernel -type f -name "bpsl" | while read -r file; do
       patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "$file" || true
     done
+
+    # pre-built bpsl binaries require correct Darwin recognition
+    substituteInPlace scripts/pslver.sh \
+      --replace 'aarch64-apple-darwin*)' 'aarch64-apple-darwin*|arm-apple-darwin*)'
 
     ./autogen.sh --fast --with-csl --with-psl
   '';
