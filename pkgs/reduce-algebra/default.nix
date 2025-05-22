@@ -133,10 +133,10 @@ stdenv.mkDerivation {
     substituteInPlace csl/configure csl/configure.ac \
       --replace 'LIBS="-lncurses  $LIBS"' 'LIBS="-lncurses -lz $LIBS"'
 
-    for arch in AMD64 AMD64_ext linux aarch64; do
-      if [ -f "psl/dist/kernel/$arch/bpsl" ]; then
-      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "psl/dist/kernel/$arch/bpsl"
-      fi
+    # reduce includes precompiled bpsl binaries
+    # need to patch them to use the Nix dynamic linker
+    find psl/dist/kernel -type f -name "bpsl" | while read -r file; do
+      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "$file" || true
     done
 
     ./autogen.sh --fast --with-csl --with-psl
