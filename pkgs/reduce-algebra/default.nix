@@ -33,42 +33,41 @@ stdenv.mkDerivation {
   };
   patches = [./fox.patch];
 
-  nativeBuildInputs =
-    [
-      autoconf
-      automake
-      ccache
-      coreutils
-      libtool
-      perl
-      ncurses
-      zlib
-      bzip2
-      libiconv
-      which
-      makeWrapper
+  nativeBuildInputs = [
+    autoconf
+    automake
+    ccache
+    coreutils
+    libtool
+    perl
+    ncurses
+    zlib
+    bzip2
+    libiconv
+    which
+    makeWrapper
 
-      # homebrew package
-      expat
-      brotli
-      fontconfig
-      freetype
-      gettext
-      libffi
-      libpng
-      xorg.libX11
-      xorg.libXau
-      xorg.libxcb
-      xorg.libXcursor
-      xorg.libXdmcp
-      xorg.libXext
-      xorg.libXfixes
-      xorg.libXft
-      xorg.libXi
-      xorg.libXrandr
-      xorg.libXrender
-      autoPatchelfHook
-    ];
+    # homebrew package
+    expat
+    brotli
+    fontconfig
+    freetype
+    gettext
+    libffi
+    libpng
+    xorg.libX11
+    xorg.libXau
+    xorg.libxcb
+    xorg.libXcursor
+    xorg.libXdmcp
+    xorg.libXext
+    xorg.libXfixes
+    xorg.libXft
+    xorg.libXi
+    xorg.libXrandr
+    xorg.libXrender
+    autoPatchelfHook
+  ];
 
   preConfigure = ''
     # Configuration: Rewrite CSL hard-coded paths to use dynamic libraries
@@ -135,10 +134,7 @@ stdenv.mkDerivation {
     find psl/dist/kernel -type f -name "bpsl" | while read -r file; do
       patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "$file" || true
     done
-
-    # pre-built bpsl binaries require correct Darwin recognition
-    substituteInPlace scripts/pslver.sh \
-      --replace 'aarch64-apple-darwin*)' 'aarch64-apple-darwin*|arm-apple-darwin*)'
+    # Note: bpsl is broken on Darwin
 
     substituteInPlace csl/cslbase/Makefile csl/cslbase/Makefile.am csl/cslbase/Makefile.in \
                       configure configure.ac \
@@ -161,15 +157,18 @@ stdenv.mkDerivation {
       "--with-lto"
       "--without-autogen"
     ]
-    ++ lib.optionals (!stdenv.isDarwin) [
-      "--with-psl"
-    ]
-    ++ lib.optionals stdenv.isDarwin [
-      "CXXFLAGS=-std=c++20"
-      "--without-fox"
-      "--disable-universal"
-      "--with-clang"
-    ];
+    ++ (
+      if stdenv.isDarwin
+      then [
+        "CXXFLAGS=-std=c++20"
+        "--without-fox"
+        "--disable-universal"
+        "--with-clang"
+      ]
+      else [
+        "--with-psl"
+      ]
+    );
   dontDisableStatic = true;
 
   installPhase =
