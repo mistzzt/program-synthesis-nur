@@ -9,4 +9,5 @@
   parsynt = pkgs.callPackage ./pkgs/parsynt {};
   Synduce = pkgs.callPackage ./pkgs/Synduce {};
   eusolver = pkgs.callPackage ./pkgs/eusolver {};
+  eldarica = pkgs.callPackage ./pkgs/eldarica {};
 }
