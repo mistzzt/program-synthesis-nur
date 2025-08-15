@@ -6,7 +6,7 @@
   which,
   coreutils,
   sbt,
-  jdk17_headless,
+  jdk8_headless,
 }:
 stdenv.mkDerivation rec {
   name = "eldarica-${version}";
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
       sha256 = "cQW1B5wTnlxEv9SczQXCIDQlxXl3Ixs68nUveyuXNYM=";
     };
 
-  buildInputs = [sbt jdk17_headless makeWrapper];
+  buildInputs = [sbt jdk8_headless makeWrapper];
 
   buildPhase = "sbt assembly";
 
@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
     ls -la target/scala-2.*/
     exit 1
 
-    makeWrapper ${jdk17_headless}/bin/java $out/bin/nix-scala-example \
+    makeWrapper ${jdk8_headless}/bin/java $out/bin/nix-scala-example \
       --add-flags "-cp \"$out/share/java/*\" com.example.nixscalaexample.Main"
   '';
 
